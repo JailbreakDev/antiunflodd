@@ -12,3 +12,11 @@ The launchd plist starts the daemon called antiunflodd when the file */Library/M
 Read more about Unflod.dylib here:
 
 [sektioneins.de - iOS Malware Campaign "Unflod Baby Panda"](https://www.sektioneins.de/en/blog/14-04-18-iOS-malware-campaign-unflod-baby-panda.html)
+
+**Compile**
+
+'''
+make package
+'''
+
+Wasn't that hard, was it? :P
