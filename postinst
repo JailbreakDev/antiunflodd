@@ -1,0 +1,3 @@
+#!/bin/bash
+chown root:wheel /Library/LaunchDaemons/com.sharedroutine.antiunflodd.plist
+launchctl load -w /Library/LaunchDaemons/com.sharedroutine.antiunflodd.plist
