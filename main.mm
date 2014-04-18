@@ -21,8 +21,8 @@
 
 bool file_exists() {
 
-	if(access("/Library/MobileSubstrate/DynamicLibraries/Unflod.dylib",F_OK) != -1 ) {
-		return TRUE;
+	if(access("/Library/MobileSubstrate/DynamicLibraries/Unflod.dylib",F_OK) != -1) {
+        return TRUE;
 	}
 
 	return FALSE;
@@ -30,16 +30,17 @@ bool file_exists() {
 
 int main(int argc, char **argv, char **envp) {
 
-	if (file_exists())
-	{
-		int rm = system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unflod.dylib");
+	if (file_exists()) {
+        
+        int rm = system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unflod.dylib");
     	
-    	if (rm == 0)
-    	{
+    	if (rm == 0) {
     		printf("Unflod.dylib removed\n");
     	}
 	}
+    
 	kill(getpid(),SIGKILL);
+    
 	return 0;
 }
 
