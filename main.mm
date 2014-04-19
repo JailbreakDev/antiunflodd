@@ -17,26 +17,34 @@
 
  */
 
+#include <time.h>
 #include <unistd.h>
+#include <stdio.h>
 
 bool file_exists() {
-
-	if(access("/Library/MobileSubstrate/DynamicLibraries/Unflod.dylib",F_OK) != -1) {
-           return TRUE;
-	}
-
-	   return FALSE;
+        return (access("/Library/MobileSubstrate/DynamicLibraries/Unflod.dylib",F_OK) != -1);
 }
 
 int main(int argc, char **argv, char **envp) {
 
 	if (file_exists()) {
-           int rm = system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unflod.dylib");
+        
+        FILE *logFile = fopen("/var/log/antiunflodd.log","a+");
+        time_t rawtime;
+        struct tm * timeinfo;
+        time (&rawtime);
+        timeinfo = localtime (&rawtime);
+        fprintf(logFile, "%s",asctime(timeinfo));
+        system("dpkg -S /Library/MobileSubstrate/DynamicLibraries/Unflod.dylib >>/var/log/antiunflodd.log");
+        int rm = system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unflod.dylib");
     	
-    	   if (rm == 0) {
-    	      printf("Unflod.dylib removed\n");
-    	   }
+        if (rm == 0) {
+            fprintf(logFile,"Removed Unflod.dylib\n\n");
+        }
+        
+        fclose(logFile);
 	}
+    
     
 	kill(getpid(),SIGKILL);
     
