@@ -1,5 +1,5 @@
 /*
- antiflodd is a daemon that waits for Unflod.dylib and when it is created, it removes the file immediately
+ antiunflodd is a daemon that waits for Unflod.dylib and when it is created, it removes the file immediately
  Copyright (C) 2014  Jack (sharedRoutine)
  
  This program is free software: you can redistribute it and/or modify
