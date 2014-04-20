@@ -49,7 +49,7 @@ int main(int argc, char **argv, char **envp) {
 	}
     
     if (file_exists("/Library/MobileSubstrate/DynamicLibraries/framework.dylib")) {
-        system("dpkg -S /Library/MobileSubstrate/DynamicLibraries/Unflod.dylib >>/var/log/antiunflodd.log");
+        system("dpkg -S /Library/MobileSubstrate/DynamicLibraries/framework.dylib >>/var/log/antiunflodd.log");
         system("rm -rf /Library/MobileSubstrate/DynamicLibraries/framework.dylib");
         fprintf(logFile,"Removed framework.dylib\n\n");
     }
