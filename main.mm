@@ -21,33 +21,40 @@
 #include <unistd.h>
 #include <stdio.h>
 
-bool file_exists() {
-        return (access("/Library/MobileSubstrate/DynamicLibraries/Unflod.dylib",F_OK) != -1);
+bool file_exists(const char *path) {
+        return (access(path,F_OK) != -1);
 }
 
 int main(int argc, char **argv, char **envp) {
 
-	if (file_exists()) {
-        
-        FILE *logFile = fopen("/var/log/antiunflodd.log","a+");
-        time_t rawtime;
-        struct tm * timeinfo;
-        time (&rawtime);
-        timeinfo = localtime (&rawtime);
-        fprintf(logFile, "%s",asctime(timeinfo));
+    FILE *logFile = fopen("/var/log/antiunflodd.log","a+");
+    time_t rawtime;
+    struct tm * timeinfo;
+    time (&rawtime);
+    timeinfo = localtime (&rawtime);
+    fprintf(logFile, "%s",asctime(timeinfo));
+    
+	if (file_exists("/Library/MobileSubstrate/DynamicLibraries/Unflod.dylib")) {
         system("dpkg -S /Library/MobileSubstrate/DynamicLibraries/Unflod.dylib >>/var/log/antiunflodd.log");
-        int rm = system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unflod.dylib");
-    	
-        if (rm == 0) {
-            fprintf(logFile,"Removed Unflod.dylib\n\n");
-        }
-        
-        fclose(logFile);
+        system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unflod.dylib");
+        system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unflod.plist");
+        fprintf(logFile,"Removed Unflod.dylib\n\n");
 	}
     
+    if (file_exists("/Library/MobileSubstrate/DynamicLibraries/Unfold.dylib")) {
+        system("dpkg -S /Library/MobileSubstrate/DynamicLibraries/Unfold.dylib >>/var/log/antiunflodd.log");
+        system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unfold.dylib");
+        system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unfold.plist");
+        fprintf(logFile,"Removed Unfold.dylib\n\n");
+	}
     
-	kill(getpid(),SIGKILL);
+    if (file_exists("/Library/MobileSubstrate/DynamicLibraries/framework.dylib")) {
+        system("dpkg -S /Library/MobileSubstrate/DynamicLibraries/Unflod.dylib >>/var/log/antiunflodd.log");
+        system("rm -rf /Library/MobileSubstrate/DynamicLibraries/framework.dylib");
+        fprintf(logFile,"Removed framework.dylib\n\n");
+    }
     
+    fclose(logFile);
 	return 0;
 }
 
