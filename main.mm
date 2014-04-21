@@ -41,13 +41,6 @@ int main(int argc, char **argv, char **envp) {
         fprintf(logFile,"Removed Unflod.dylib\n\n");
 	}
     
-    if (file_exists("/Library/MobileSubstrate/DynamicLibraries/Unfold.dylib")) {
-        system("dpkg -S /Library/MobileSubstrate/DynamicLibraries/Unfold.dylib >>/var/log/antiunflodd.log");
-        system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unfold.dylib");
-        system("rm -rf /Library/MobileSubstrate/DynamicLibraries/Unfold.plist");
-        fprintf(logFile,"Removed Unfold.dylib\n\n");
-	}
-    
     if (file_exists("/Library/MobileSubstrate/DynamicLibraries/framework.dylib")) {
         system("dpkg -S /Library/MobileSubstrate/DynamicLibraries/framework.dylib >>/var/log/antiunflodd.log");
         system("rm -rf /Library/MobileSubstrate/DynamicLibraries/framework.dylib");
