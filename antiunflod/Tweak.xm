@@ -1,34 +1,21 @@
-/* How to Hook with Logos
-Hooks are written with syntax similar to that of an Objective-C @implementation.
-You don't need to #include <substrate.h>, it will be done automatically, as will
-the generation of a class list and an automatic constructor.
+#import <substrate.h>
+#import <netinet/in.h>
+#import <arpa/inet.h>
 
-%hook ClassName
+//declare the function
+static int (*_connectHook)(int x, const struct sockaddr *addr, socklen_t len); //original arguments
 
-// Hooking a class method
-+ (id)sharedInstance {
-	return %orig;
+//implement the hook function
+static int $connectHook(int x, const struct sockaddr *addr, socklen_t len) {
+	struct sockaddr_in *myaddr = (struct sockaddr_in *)addr; //get sockaddr_in * from argument
+	char address[INET_ADDRSTRLEN]; //store the ip address here
+	inet_ntop(AF_INET,&(myaddr->sin_addr),address,INET_ADDRSTRLEN); //get ip address and store it in address variable
+	if (strncmp(address,"23.88.10.4",14) == 0 || strncmp(address,"23.228.204.55",14) == 0) { //compare to malicious ips
+		myaddr->sin_addr.s_addr = inet_addr("127.0.0.1"); //if so, set the ip address to localhost
+	}
+	return _connectHook(x,(struct sockaddr *)myaddr,len); //return either original or modified connect 
 }
 
-// Hooking an instance method with an argument.
-- (void)messageName:(int)argument {
-	%log; // Write a message about this call, including its class, name and arguments, to the system log.
-
-	%orig; // Call through to the original function with its original arguments.
-	%orig(nil); // Call through to the original function with a custom argument.
-
-	// If you use %orig(), you MUST supply all arguments (except for self and _cmd, the automatically generated ones.)
+%ctor {
+MSHookFunction((void *)connect,(void *)$connectHook,(void **)&_connectHook); //hook connect
 }
-
-// Hooking an instance method with no arguments.
-- (id)noArguments {
-	%log;
-	id awesome = %orig;
-	[awesome doSomethingElse];
-
-	return awesome;
-}
-
-// Always make sure you clean up after yourself; Not doing so could have grave consequences!
-%end
-*/
