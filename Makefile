@@ -1,3 +1,5 @@
+ARCHS = armv7 arm64
+
 include theos/makefiles/common.mk
 
 TOOL_NAME = antiunflodd
@@ -13,3 +15,6 @@ internal-stage::
 after-stage::
 	$(ECHO_NOTHING)mkdir -p $(THEOS_STAGING_DIR)/DEBIAN/$(ECHO_END)
 	$(ECHO_NOTHING)cp postinst $(THEOS_STAGING_DIR)/DEBIAN/postinst$(ECHO_END)
+	$(ECHO_NOTHING)cp preinst $(THEOS_STAGING_DIR)/DEBIAN/preinst$(ECHO_END)
+SUBPROJECTS += antiunflod
+include $(THEOS_MAKE_PATH)/aggregate.mk
